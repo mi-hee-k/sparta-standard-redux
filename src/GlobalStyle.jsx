@@ -50,10 +50,11 @@ table {
 	border-spacing: 0;
 }
 
-/* input, 
+input, 
 textarea {
-  border:none
-} */
+  border:none;
+	padding: 10px;
+}
 `;
 
 export default GlobalStyle;

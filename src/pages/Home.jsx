@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addTodo, deleteTodo, switchTodo } from '../redux/modules/todo';
 import { useNavigate } from 'react-router-dom';
 import shortid from 'shortid';
+import AddForm from '../components/AddForm';
+import TodoList from '../components/TodoList';
+import styled from 'styled-components';
 
 const Home = () => {
   const Todos = useSelector((state) => state.TodoReducer);
@@ -68,50 +71,39 @@ const Home = () => {
     navigate(`/detail/${id}`);
   };
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor='title'>제목</label>
-          <input type='text' id='title' name='title' onChange={handleInput} />
-        </div>
-        <div>
-          <label htmlFor='content'>내용</label>
-          <input
-            type='text'
-            id='content'
-            name='content'
-            onChange={handleInput}
-          />
-        </div>
-        <button>등록</button>
-      </form>
+    <ScWrapper>
+      <AddForm handleSubmit={handleSubmit} handleInput={handleInput} />
 
       <div>
-        <h1>할일 목록 💪</h1>
-        {Todos.filter((todo) => todo.isDone === false).map((todo) => {
-          return (
-            <div onClick={() => moveToDetail(todo.id)}>
-              <p>{todo.title}</p>
-              <p>{todo.contents}</p>
-              <button onClick={() => completeBtn(todo.id)}>완료</button>
-              <button onClick={() => deleteBtn(todo.id)}>삭제</button>
-            </div>
-          );
-        })}
-        <h1>완료목록 👏</h1>
-        {Todos.filter((todo) => todo.isDone === true).map((todo) => {
-          return (
-            <div>
-              <p>{todo.title}</p>
-              <p>{todo.contents}</p>
-              <button onClick={() => completeBtn(todo.id)}>완료</button>
-              <button onClick={() => deleteBtn(todo.id)}>삭제</button>
-            </div>
-          );
-        })}
+        <TodoList
+          Todos={Todos}
+          moveToDetail={moveToDetail}
+          completeBtn={completeBtn}
+          deleteBtn={deleteBtn}
+          isDone={false}
+        />
+
+        <TodoList
+          Todos={Todos}
+          moveToDetail={moveToDetail}
+          completeBtn={completeBtn}
+          deleteBtn={deleteBtn}
+          isDone={true}
+        />
       </div>
-    </>
+    </ScWrapper>
   );
 };
+
+const ScWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #eee;
+  width: 100%;
+  height: 100vh;
+  padding: 20px;
+`;
 
 export default Home;
